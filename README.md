@@ -75,10 +75,6 @@ w:web | k:keep | ed:edic web | e:end
 
 ### Demo
 
-![demo](https://imgur.com/bh7kdbn.gif)
-
-![demo_xmind](https://imgur.com/mxxGBIz.gif)
-
 
 
 ## 執行環境
