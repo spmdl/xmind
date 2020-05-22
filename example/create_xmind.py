@@ -5,47 +5,224 @@ from xmind.core.const import TOPIC_DETACHED
 from xmind.core.markerref import MarkerId
 from xmind.core.topic import TopicElement
 
+import os
+
+import time
+
 
 def gen_my_xmind_file():
-    # load an existing file or create a new workbook if nothing is found
+
     workbook = xmind.load("my.xmind")
-    # get the first sheet(a new workbook has a blank sheet by default)
     sheet1 = workbook.getPrimarySheet()
-    design_sheet1(sheet1)
-    # create sheet2
-    gen_sheet2(workbook, sheet1)
-    # now we save as test.xmind
-    xmind.save(workbook, path='test.xmind')
+    time_name = basic_sheet(sheet1, workbook)
+    # gen_sheet2(sheet1, workbook)
+
+    xmind.save(workbook, path='minmap/{}.xmind'.format(time_name))
 
 
-def design_sheet1(sheet1):
-    # ***** first sheet *****
-    sheet1.setTitle("first sheet")  # set its title
+def tomato():
+    os.system("../tomato-clock/tomato.py")
 
-    # get the root topic of this sheet(a sheet has  a blank root topic by default)
-    root_topic1 = sheet1.getRootTopic()
-    root_topic1.setTitle("root node")  # set its title
+def create_node(get_node, get_web):
 
-    # create some sub topic element
-    sub_topic1 = root_topic1.addSubTopic()
-    sub_topic1.setTitle("first sub topic")
+    b_web = True
+    while b_web:
+        task_node = input("create node | end  \n at {}->{}\n input node：".format(get_web, get_node))
 
-    sub_topic2 = root_topic1.addSubTopic()
-    sub_topic2.setTitle("second sub topic")
+        if task_node == "end":
+            b_web = False
+            # dict['node'].append(get_node.copy())
+        else:
+            get_node.append(task_node)
 
-    sub_topic3 = root_topic1.addSubTopic()
-    sub_topic3.setTitle("third sub topic")
+    return get_node
 
-    sub_topic4 = root_topic1.addSubTopic()
-    sub_topic4.setTitle("fourth sub topic")
+def creat_child_node(child_node):
+    test = {'child_node': "如何傳值到後端", 'web': [
+        {"name": "b", "src": "https://github.com/zhuifengshen/xmind"},
+        {"name": "c", "src": "https://github.com/zhuifengshen/xmind"}
+    ], 'node': [
+        ["fals 阻止頁面更新", "jQuery 動態生成物件"],
+        ["頁面沒有刷新因為 hs6"]
+    ]
+     }
 
-    # create a detached topic(attention: only root topic can add a detached topic)
-    detached_topic1 = root_topic1.addSubTopic(topics_type=TOPIC_DETACHED)
-    detached_topic1.setTitle("detached topic")
-    detached_topic1.setPosition(0, 30)
+    # return (test)
+    dict = {"child_node": child_node, "web":[], "node":[]}
 
-    sub_topic1_1 = sub_topic1.addSubTopic()
-    sub_topic1_1.setTitle("I'm a sub topic too")
+    b = True
+    get_web = {"name":"", "src":""}
+    get_now_web = ""
+    get_now_node = []
+    while b:
+
+
+        task_web = input("w:web | k:keep | ed:edic web | e:end  \n 當前 web {}->{} \n 請輸入選擇：".format(get_now_web, get_now_node))
+
+        if task_web =="w" or task_web =="web":
+            get_web["name"] = input("web_name：")
+            get_web["src"] = input("web_src：")
+            dict['web'].append(get_web.copy())
+
+            get_now_web = get_web["name"]
+
+            # dict['node'].extend(create_node([], get_now_web).copy())
+            node = create_node([], get_now_web).copy()
+            dict['node'].append(node)
+            get_now_node = node
+            get_web = {"name": "", "src": ""}
+
+        if task_web == 'k' or task_web == 'keep':
+            tomato()
+
+        if task_web == "ed" or task_web == "edic":
+            web_name = input("web_name：")
+
+            b_edic = True
+            while b_edic:
+
+                try:
+                    num = [i for i, _ in enumerate(dict['web']) if _['name'] == web_name][0]
+
+                    get_now_web = web_name
+                    # dict['node'] = (create_node(dict['node'], get_now_web).copy())
+                    node  = create_node(dict['node'][num], get_now_web).copy()
+                    dict['node'][num] = node
+                    get_now_node = node
+
+                    b_edic = False
+                except IndexError:
+                    if web_name == "end" or web_name == "e":
+                        b_edic = False
+                    else:
+                        web_name = input("請輸入正確 web_name | end：")
+
+        if task_web =="e" or task_web =="end" or task_web =="q":
+            b = False
+
+    return dict
+
+def get_tree(a):
+
+    c = a['child_node']
+    c2 = a['web']
+    c3 = a['node']
+    # for i, val in enumerate(c):
+
+    print(".{}".format(c))
+
+    for i2, val2 in enumerate(c2):
+        print("├── {}".format(val2['name']))
+
+        for i4, val4 in enumerate(c3):
+            if i4 == i2:
+                for i5, val5 in enumerate(val4):
+                    print("│   ├──  {}".format(val5))
+
+    print("└───")
+
+def painting_time(s1, time, child_node):
+
+    t1 = s1.getRootTopic()
+    t1.setTitle("Time")
+
+    t = t1.addSubTopic()
+    t.setTitle("{}-{}".format(time['st'], time['et']))
+
+    tt = t.addSubTopic()
+    tt.setTitle(child_node)
+
+def painting_child_node(s1, root, dict):
+
+    r1 = s1.getRootTopic()  # get the root topic of this sheet
+    r1.setTitle(root)  # set its title
+
+    c = dict['child_node']
+    c2 = dict['web']
+    c3 = dict['node']
+
+    a = r1.addSubTopic()
+    a.setTitle(c)  # set its title
+
+    print(".{}".format(c))
+    for i2, val2 in enumerate(c2):
+
+        a2 = a.addSubTopic()
+        #        if isinstance(val, list):
+
+        print("├── {}".format(val2['name']))
+
+        a3 = 'b3' + str(val2['name'])
+        a3 = a2.addSubTopic()
+        a3.setTitle(val2['name'])
+        a3.setURLHyperlink("{}".format(val2['src']))
+
+        for i4, val4 in enumerate(c3):
+            if i4 == i2:
+                for i5, val5 in enumerate(val4):
+                    print("│   ├──  {}".format(val5))
+                    a4 = a3.addSubTopic()
+                    a4.setTitle(val5)
+
+    print("└───")
+
+def time_sheet(s2, time, child_node):
+
+    t1 = s2.getRootTopic()
+    t1.setTitle("Time")
+
+    t = t1.addSubTopic()
+    t.setTitle("{}-{}".format(time['st'], time['et']))
+
+    tt = t.addSubTopic()
+    tt.setTitle(child_node)
+
+def basic_sheet(s1, workbook):
+    s1.setTitle("child_node sheet")  # set its title
+
+    s2 = workbook.createSheet()
+    s2.setTitle("time sheet")
+
+    creat_child = []
+    creat_child_time = []
+
+    result = True
+    root = input("create root node: \n")
+    start_time = time.strftime("%b%d|%H:%M")
+
+
+    while result:
+
+        task = input("t:tree | c:create child_node | e:end  \ninput:")
+        child_time = {"st": "", "et": ""}
+
+        if task == "t" or task == "tree":
+
+            for i, val in enumerate(creat_child):
+                get_tree(val)
+
+        if task == "c" or task == "create":
+            child_node = input("child_node_name：")
+
+            child_time['st'] = time.strftime("%H:%M")
+            tomato()
+
+            creat_child.append(creat_child_node(child_node).copy())
+            child_time['et'] = time.strftime("%H:%M")
+            creat_child_time.append(child_time)
+
+        if task == "e" or task == "end" or task == "q":
+            end_time = time.strftime("%H:%M")
+
+            for i, val in enumerate(creat_child):
+                painting_child_node(s1, root, val)
+                time_sheet(s2, creat_child_time[i], val['child_node'])
+
+
+            result = False
+
+    print('\n {}-{}.xmind'.format(start_time, end_time))
+    return("{}-{}".format(start_time, end_time))
 
 
 def gen_sheet2(workbook, sheet1):
