@@ -76,7 +76,6 @@ w:web | k:keep | ed:edic web | e:end
 ### Demo
 
 
-
 ## 執行環境
 
 * Python 3.7.6
