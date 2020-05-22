@@ -75,7 +75,9 @@ w:web | k:keep | ed:edic web | e:end
 
 ### Demo
 
-
+這邊 gif 放上來都失敗，想看的可以移駕 [想了解更多詳細過程可以參考我的筆記](https://medium.com/@cbb104002/side-project-tomato-clock-xmind-d5c2ddf14e9b?source=friends_link&sk=107d0970b1a8f8748983d0cd50a2bbc1)
+最下方有 
+這邊 gif 放上來都失敗，想看的可以移駕 D
 
 ![xmind](https://imgur.com/ZMfGDNA.png)
 
