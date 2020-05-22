@@ -75,9 +75,9 @@ w:web | k:keep | ed:edic web | e:end
 
 ### Demo
 
-![demo](https://imgur.com/UXqKZxQ.gif)
+![demo](https://imgur.com/bh7kdbn.gif)
 
-![demo_xmind](https://imgur.com/navBnJ0.gif)
+![demo_xmind](https://imgur.com/mxxGBIz.gif)
 
 
 
